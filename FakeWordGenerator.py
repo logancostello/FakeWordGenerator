@@ -21,7 +21,6 @@ def get_syllables(word):
     return data[0][1]
 
 def update_weights(graph, word):
-    print(word)
     syllables = get_syllables(word)
 
     # indicate start
@@ -40,10 +39,11 @@ def take_random_step(graph, start):
 
 # creating the graph takes a lot of time, so we save it in memory for the future
 def create_and_save_graph():
-    english_words = get_words_as_list()[:20]
+    english_words = get_words_as_list()
     graph = WeightedDirectedGraph()
 
     for word in english_words:
+        print(word)
         update_weights(graph, word)
 
     # save to a JSON file
@@ -64,10 +64,11 @@ def generate_random_word():
             random_word += syllable
         syllable = take_random_step(graph, syllable)
 
-
-    print(random_word)
+    if random_word in get_words_as_list():
+        return generate_random_word()
     return random_word
 
 if __name__ == '__main__':
-    create_and_save_graph()
+    print(generate_random_word())
+    # results include: posals, endar, modity, combina, arguru, actical, etc
 
