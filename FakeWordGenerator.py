@@ -51,6 +51,7 @@ def create_and_save_graph():
         json.dump(graph.adj_matrix, f)
 
 def generate_random_word():
+    # results include: posals, endar, modity, combina, arguru, actical, etc
     with open('syllable_graph.json', 'r') as f:
         syllable_graph = json.load(f)
 
@@ -70,5 +71,4 @@ def generate_random_word():
 
 if __name__ == '__main__':
     print(generate_random_word())
-    # results include: posals, endar, modity, combina, arguru, actical, etc
 
