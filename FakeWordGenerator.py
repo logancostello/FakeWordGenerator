@@ -2,6 +2,7 @@ import spacy
 from spacy_syllables import SpacySyllables
 from WeightedDirectedGraph import *
 import random
+import json
 
 def get_words_as_list():
     with open('wordlist.10000.txt') as word_file:
@@ -20,6 +21,7 @@ def get_syllables(word):
     return data[0][1]
 
 def update_weights(graph, word):
+    print(word)
     syllables = get_syllables(word)
 
     # indicate start
@@ -32,14 +34,40 @@ def update_weights(graph, word):
     graph.increment_edge_weight(syllables[-1], ".")
 
 # traverses the graph by following a single edge using a weighted random decision
-def randomly_traverse_one_step(graph, start):
+def take_random_step(graph, start):
     keys, weights = zip(*graph.adj_matrix[start].items())
     return random.choices(keys, weights=weights)[0]
 
+# creating the graph takes a lot of time, so we save it in memory for the future
+def create_and_save_graph():
+    english_words = get_words_as_list()[:20]
+    graph = WeightedDirectedGraph()
+
+    for word in english_words:
+        update_weights(graph, word)
+
+    # save to a JSON file
+    with open('syllable_graph.json', 'w') as f:
+        json.dump(graph.adj_matrix, f)
+
+def generate_random_word():
+    with open('syllable_graph.json', 'r') as f:
+        syllable_graph = json.load(f)
+
+    graph = WeightedDirectedGraph()
+    graph.adj_matrix = syllable_graph
+
+    random_word = ""
+    syllable = "*"
+    while syllable != ".":
+        if syllable != "*":
+            random_word += syllable
+        syllable = take_random_step(graph, syllable)
+
+
+    print(random_word)
+    return random_word
 
 if __name__ == '__main__':
-    graph = WeightedDirectedGraph()
-    update_weights(graph, "alphabet")
-    update_weights(graph, "giraffe")
-    print(graph)
-    print(randomly_traverse_one_step(graph, "*"))
+    create_and_save_graph()
+
