@@ -10,9 +10,23 @@ in our list of 10,000 words. We can then take steps through the graph by followi
 
 ## Letter Version
 Alternatively, our graph can connnect letters rather than syllables. On average, this version seems to produce worse words, but the best words from this version seem better than
-the best words from syllable version
+the best words from syllable version.
 
 ## Issues
 Neither a graph of syllables nor letters seems optimal. For example, "node", "lode", and "tode" are all considered unique syllables. For the sake of word generation, it would be better
-if nodes "n", "l", and "t" all pointed to the "ode" sound. This highlights how even syllables can be split further down while still be larger than individual letters. I think a graph
-of phonetic sounds would be better, and it might be something I come back to for this project
+if nodes "n", "l", and "t" all pointed to the "ode" sound. This highlights how even syllables can be split further down while still be larger than individual letters. 
+
+Additionally, real words often only contain a couple syllables, so the word generator often just combines words into bigger words, such as combining "certain" and "cancer" into "cancertain".
+
+I think a graph of phonetic sounds would be better, and it might be something I come back to for this project.
+
+## Example Words
+Here are some example words that have been generated
+
+### The Best
+Syllable Version: trianation, posals, endar, modity, combina, arguru, octoria   
+Letter Version: mung, brita, tedor, fid, mauta, duriatic
+
+### The Worst
+Syllable Version: feofferson, strengthendarwinning, arthritisers, legisbn    
+Letter Version: rsiparolfiokes, fdyrysuti, consleanyrioungaspg, wntrededligrerthiongiz, hnctemph
