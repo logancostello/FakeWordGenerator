@@ -47,12 +47,12 @@ def create_and_save_graph():
         update_weights(graph, word)
 
     # save to a JSON file
-    with open('syllable_graph.json', 'w') as f:
+    with open('letter_graph.json', 'w') as f:
         json.dump(graph.adj_matrix, f)
 
-def generate_random_word():
+def generate_random_word(graph_name):
     # results include: posals, endar, modity, combina, arguru, actical, etc
-    with open('syllable_graph.json', 'r') as f:
+    with open(graph_name, 'r') as f:
         syllable_graph = json.load(f)
 
     graph = WeightedDirectedGraph()
@@ -65,10 +65,11 @@ def generate_random_word():
             random_word += syllable
         syllable = take_random_step(graph, syllable)
 
+    # if word is real, try again
     if random_word in get_words_as_list():
-        return generate_random_word()
+        return generate_random_word(graph_name)
     return random_word
 
 if __name__ == '__main__':
-    print(generate_random_word())
+    print(generate_random_word("syllable_graph.json"))
 
