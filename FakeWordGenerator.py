@@ -1,6 +1,6 @@
 import spacy
 from spacy_syllables import SpacySyllables
-
+from WeightedDirectedGraph import *
 def get_words_as_list():
     with open('wordlist.10000.txt') as word_file:
         valid_words = list(word_file.read().split())
@@ -15,7 +15,22 @@ def get_syllables(word):
     assert nlp.pipe_names == ["tok2vec", "tagger", "syllables", "parser", "attribute_ruler", "lemmatizer", "ner"]
     doc = nlp(word)
     data = [(token.text, token._.syllables, token._.syllables_count) for token in doc]
-    print(data[0][1])
+    return data[0][1]
+
+def update_weights(graph, word):
+    syllables = get_syllables(word)
+
+    # indicate start
+    graph.increment_edge_weight("*", syllables[0])
+
+    for i in range(0, len(syllables) - 1):
+        graph.increment_edge_weight(syllables[i], syllables[i + 1])
+
+    # indicate end
+    graph.increment_edge_weight(syllables[-1], ".")
+
 
 if __name__ == '__main__':
-    get_syllables("accomplish")
+    graph = WeightedDirectedGraph()
+    update_weights(graph, "alphabet")
+    print(graph)
