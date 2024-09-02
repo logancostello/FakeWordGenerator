@@ -1,6 +1,8 @@
 import spacy
 from spacy_syllables import SpacySyllables
 from WeightedDirectedGraph import *
+import random
+
 def get_words_as_list():
     with open('wordlist.10000.txt') as word_file:
         valid_words = list(word_file.read().split())
@@ -29,8 +31,15 @@ def update_weights(graph, word):
     # indicate end
     graph.increment_edge_weight(syllables[-1], ".")
 
+# traverses the graph by following a single edge using a weighted random decision
+def randomly_traverse_one_step(graph, start):
+    keys, weights = zip(*graph.adj_matrix[start].items())
+    return random.choices(keys, weights=weights)[0]
+
 
 if __name__ == '__main__':
     graph = WeightedDirectedGraph()
     update_weights(graph, "alphabet")
+    update_weights(graph, "giraffe")
     print(graph)
+    print(randomly_traverse_one_step(graph, "*"))
